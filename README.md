@@ -5,3 +5,5 @@ teacher: Igor Shklyar
 
 student: Volodymyr Dolidze
 dolia1903@gmail.com
+
+04.10 Modified chessboard.html - revomed tag transform: rotate
