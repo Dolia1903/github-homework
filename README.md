@@ -5,3 +5,5 @@ teacher: Igor Shklyar
 
 student: Volodymyr Dolidze
 dolia1903@gmail.com
+
+- 04.10 added method main in Main.java and sout "Hello, World!"
