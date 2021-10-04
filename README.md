@@ -8,3 +8,4 @@ dolia1903@gmail.com
 
 - 04.10 added method main in Main.java and sout "Hello, World!"
 - 04.10 added method print with 1 param String
+- 04.10 added overloaded method print with 2 params
