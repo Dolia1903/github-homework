@@ -10,3 +10,4 @@ dolia1903@gmail.com
 04.10 added method print with 1 param String
 04.10 added overloaded method print with 2 params
 04.10 Modified chessboard.html - revomed tag transform: rotate
+04/10 mofidied ReadFileLineByLine - made edits
