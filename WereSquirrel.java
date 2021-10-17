@@ -27,9 +27,9 @@ public class WereSquirrel {
         File file = new File(PATH);
         try (FileReader fr = new FileReader(file); BufferedReader reader = new BufferedReader(fr)) {
             String line = reader.readLine();
-            // we're doing array's size initialization only once (in previous HW6, I did it for each line)
-            booleanArray = Arrays.copyOf(booleanArray, (int) Files.lines(Path.of(PATH)).count());
-            actionsArray = Arrays.copyOf(actionsArray, (int) Files.lines(Path.of(PATH)).count());
+            int linesCounter = (int) Files.lines(Path.of(PATH)).count();
+            booleanArray = Arrays.copyOf(booleanArray, linesCounter);
+            actionsArray = Arrays.copyOf(actionsArray, linesCounter);
 
             while (line != null) {
                 checkSquirrel(line);
@@ -78,7 +78,7 @@ public class WereSquirrel {
 
     /**
      * Our basic method to find index of the element from String[] array, using simple search algorithm
-     * @param array String[] array, we're going to use it for uniqueActions and actionsArray
+     * @param array - String[] array, we're going to use it for uniqueActions and actionsArray
      * @param elementToSearch - String element fo find
      * @return index of the element if success, -1 if the element is absent
      */
@@ -168,46 +168,22 @@ public class WereSquirrel {
     }
 
     /**
-     * Overloaded reader() method with arguments - conditions of checking the line & new event
+     * Method to add new event into actionsArray to check our correlation theory
      * @param include - first condition, check if the action included into line
      * @param exclude - second condition, check if the action is absent in the line
      * @param newEvent - the new action we're going to add to check our correlation theory
      */
-    public static void reader(String include, String exclude, String newEvent) {
-        File file = new File(PATH);
-        try (FileReader fr = new FileReader(file); BufferedReader reader = new BufferedReader(fr)) {
-            String line = reader.readLine();
-            // we're doing array's size initialization only once (in previous HW6, I did it for each line)
-            booleanArray = Arrays.copyOf(booleanArray, (int) Files.lines(Path.of(PATH)).count());
-            actionsArray = Arrays.copyOf(actionsArray, (int) Files.lines(Path.of(PATH)).count());
-
-            while (line != null) {
-                if (line.contains(include) && !line.contains(exclude)) {
-                    // we'll keep ,true/,false as they are - find the last coma's index before false/true
-                    String formattedLine = line.substring(line.lastIndexOf(","));
-                    checkSquirrel(newEvent + formattedLine); // so we add "арахис-зубы, false/true"
-                    line = reader.readLine();
-                }
-                checkSquirrel(line);
-                line = reader.readLine();
+    public static void changeEvents(String include, String exclude, String newEvent) {
+        for (int i = 0; i < actionsArray.length; i++) {
+            String line = Arrays.toString(actionsArray[i]);
+            if (line.contains(include) && !line.contains(exclude)) {
+                actionsArray[i] = new String[]{newEvent + "," + booleanArray[i]};
             }
-        } catch (IOException e) {
-            e.printStackTrace();
         }
+        uniqueActions = Arrays.copyOf(uniqueActions, uniqueActions.length + 1);
+        uniqueActions[uniqueActions.length - 1] = newEvent;
     }
 
-    /**
-     * Method to clear all static variables to proceed with adding new event
-     */
-    public static void clearStaticVariables() {
-        booleanArray = Arrays.copyOf(booleanArray, 0);
-        actionsArray = Arrays.copyOf(actionsArray, 0);
-        booleanElementCounter = 0;
-        actionsRowsCounter = 0;
-        uniqueActions = Arrays.copyOf(uniqueActions, 0);
-        statisticalVariables = Arrays.copyOf(statisticalVariables, 0);
-        correlationArray = Arrays.copyOf(correlationArray, 0);
-    }
 
     /**
      * Method to print the correlation for 1 single event - "арахис-зубы"
@@ -230,8 +206,7 @@ public class WereSquirrel {
 
         System.out.println("------------------------");
 
-        clearStaticVariables();
-        reader("ел арахис", "чистил зубы", "арахис-зубы");
+        changeEvents("ел арахис", "чистил зубы", "арахис-зубы");
         statisticalVariablesArray();
         calculateCorrelation();
         printSingleEvent("арахис-зубы");
