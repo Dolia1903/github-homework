@@ -1,109 +1,25 @@
-/*
-1.04 Exercise: Configure a Task:
-1. Create an empty task definition and name your task "hello".
-2. Give your task a description.
-3. Add an action to your task which prints "Hello World!"
-*/
-
-task hello {
-    description "This task will print Hello World!"
-    group "1.04 Exercise"
-    doLast {
-        println "Hello World!"
-    }
+plugins {
+    id 'java'
 }
 
-
-/*
-1.06 Exercise: Task Dependencies:
-Configure dependencies for the "brew", "pour" and "drink" tasks
-such that to drink my coffee I must first pour it, and pouring my
-coffee requires me to first brew it.
-*/
-
-task brew {
-    doLast {
-        println "Brewing. Drip, drip, drip."
-    }
-}
-
-task pour {
-    dependsOn "brew"
-
-    doLast {
-        println "Pouring. Glug, glug, glug."
-    }
-}
-
-task drink {
-    dependsOn "pour"
-
-    doLast {
-        println "Drinking. Gulp, gulp, gulp."
-    }
-}
-
-/*
-2.01 Exercise: The Java Plugin:
-1. Apply the Java plugin to your project.
-2. Modify the 'jar' task to add a manifest attribute named 'Implementation-Version' with a value of '1.0'.
-3. Use the gradle command-line to build your JAR file.
-*/
-
-// TODO: Add Java plugin
-apply plugin: 'java'
-
-jar {
-    // TODO: Add manifest attribute
-    manifest {
-        attributes 'Implementation-Version': '1.0'
-    }
-}
-
-/*
-2.04 Exercise: Repositories & Dependencies:
-1. Configure Maven Central as a repository
-2. Add a dependency to the 'compile' configuration for the latest version of commons-io.
-3. Add a file dependency that includes all the jars in the `libs` directory.
-4. Run the `printDependencies` task to verify the dependencies.
-*/
-
-apply plugin: 'java'
-
-// TODO: Add maven central repository
-repositories {
-    mavenCentral()
-}
-
-// TODO: Add dependencies
-dependencies {
-    implementation 'commons-io:commons-io:2.5'
-    implementation fileTree(dir: 'libs', include: '*.jar')
-}
-
-task printDependencies {
-    doLast {
-        configurations.compile.each { println it.name }
-    }
-}
-
-/*
-2.11-Exercise-WorkWithUnitTests:
-1. Add a test dependency to the latest version of 'junit'.
-2. Run the provided unit tests.
-3. Use the test reports to identify the failing test. Modify the production code such that the failing test will pass.
-*/
-
-
-apply plugin: 'java'
+group 'org.example'
+version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
 }
 
-// TODO: Add junit dependency
 dependencies {
-    testCompile 'junit:junit:4.12'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.7.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.7.0'
+
+    // https://mvnrepository.com/artifact/com.github.cliftonlabs/json-simple
+    implementation group: 'com.github.cliftonlabs', name: 'json-simple', version: '4.0.0'
+
+    // https://mvnrepository.com/artifact/net.sf.dozer/dozer
+    implementation group: 'net.sf.dozer', name: 'dozer', version: '5.5.1'
 }
 
- // https://pastenow.ru/9edda0aa3d262899b89a4b857d96d070  for 3.
+test {
+    useJUnitPlatform()
+}
